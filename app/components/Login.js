@@ -10,19 +10,13 @@ import PesanError from './PesanError';
 import { CURRENT_USER_QUERY } from './User';
 
 const SIGNIN_MUTATION = gql`
-  mutation SIGNIN_MUTATION(
-    $email: String!
-    $password: String!
-    $pinUjian: String!
-  ) {
-    loginUjian(email: $email, password: $password, pinUjian: $pinUjian) {
+  mutation SIGNIN_MUTATION($pinPengawas: String!, $pinUjian: String!) {
+    loginPengawas(pinPengawas: $pinPengawas, pinUjian: $pinUjian) {
       jwt
       id
     }
   }
 `;
-
-const { Footer } = Layout;
 
 const Logo = styled.div`
   display: flex;
@@ -57,9 +51,8 @@ const SubLogo = styled.div`
 
 class Login extends Component {
   state = {
-    email: 'mahasiswa1@gmail.com',
-    password: '23',
-    pinUjian: 'XqH62jUC2'
+    pinPengawas: 'PsC5VSl7KD',
+    pinUjian: '4eJpgAQyu'
   };
 
   saveToState = e => {
@@ -81,19 +74,19 @@ class Login extends Component {
             <h1>CBT FMIPA UR</h1>
           </Logo>
           <SubLogo>
-            <p>Aplikasi Ujian Computer Based Test FMIPA UR</p>
+            <p>Aplikasi Pengawas Ujian Computer Based Test FMIPA UR</p>
           </SubLogo>
           <Mutation
             mutation={SIGNIN_MUTATION}
             variables={this.state}
-            onCompleted={data =>
+            onCompleted={data => {
               this.props.history.push({
-                pathname: '/persiapan',
-                state: data.loginUjian
-              })
-            }
+                pathname: '/info',
+                state: data.loginPengawas
+              });
+            }}
           >
-            {(loginUjian, { error, loading, data }) => {
+            {(loginPengawas, { error, loading, data }) => {
               if (error) console.log(error);
 
               if (loading) return <p>loading...</p>;
@@ -102,8 +95,7 @@ class Login extends Component {
                 <Form
                   onSubmit={async e => {
                     e.preventDefault();
-                    const data = await loginUjian();
-                    console.log(data, 'ini data');
+                    await loginPengawas();
                   }}
                   className="login-form"
                   style={{ maxWidth: '100%' }}
@@ -113,31 +105,16 @@ class Login extends Component {
                     <Input
                       prefix={
                         <Icon
-                          type="mail"
-                          style={{ color: 'rgba(0,0,0,.25)' }}
-                        />
-                      }
-                      type="email"
-                      name="email"
-                      onChange={this.saveToState}
-                      required
-                      value={this.state.email}
-                      placeholder="email"
-                    />
-                  </Form.Item>
-                  <Form.Item>
-                    <Input
-                      prefix={
-                        <Icon
                           type="lock"
                           style={{ color: 'rgba(0,0,0,.25)' }}
                         />
                       }
-                      type="password"
-                      name="password"
+                      type="text"
+                      name="pinPengawas"
                       onChange={this.saveToState}
                       required
-                      placeholder="password"
+                      value={this.state.pinPengawas}
+                      placeholder="Pin Pengawas"
                     />
                   </Form.Item>
                   <Form.Item>
@@ -153,7 +130,7 @@ class Login extends Component {
                       value={this.state.pinUjian}
                       onChange={this.saveToState}
                       required
-                      placeholder="pin ujian"
+                      placeholder="Pin Ujian"
                     />
                   </Form.Item>
                   <Form.Item>
@@ -165,7 +142,6 @@ class Login extends Component {
                     >
                       Log in
                     </Button>
-                    <Link to="/">Home</Link>
                   </Form.Item>
                 </Form>
               );

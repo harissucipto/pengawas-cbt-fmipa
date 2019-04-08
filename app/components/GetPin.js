@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, List, Avatar } from 'antd';
+import { Card, List, Avatar, Button } from 'antd';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import ProfilUjian from './ProfilUjian';
@@ -8,40 +8,7 @@ const INFO_UJIAN_QUERY = gql`
   query INFO_UJIAN_QUERY($id: String!, $jwt: String!) {
     infoUjian(id: $id, jwt: $jwt) {
       id
-      nama
-      dosen {
-        id
-        nama
-      }
-      prodi {
-        id
-        nama
-        jurusan {
-          id
-          nama
-        }
-      }
-      kelas {
-        id
-        nama
-        mataKuliah {
-          id
-          nama
-        }
-      }
-      bankSoal {
-        id
-        nama
-      }
       pin
-      tanggalPelaksanaan
-      lokasi
-      JumlahSoal
-      durasiPengerjaan
-      presentasiSusah
-      presentasiSedang
-      presentasiMudah
-      durasiPengerjaan
     }
   }
 `;
@@ -70,16 +37,20 @@ const InformasiUjian = props => {
         const { infoUjian } = data;
 
         return (
-          <Card loading={loading} title="Informasi Ujian yang  Dilaksanakan">
-            <ProfilUjian
-              ujian={infoUjian}
-              grid={{
-                gutter: 16,
-                lg: 3,
-                md: 2,
-                xs: 1
-              }}
-            />
+          <Card
+            loading={loading}
+            title="Pin Ujian"
+            extra={<Button>Generate Baru</Button>}
+          >
+            <List grid={grid}>
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<Avatar icon="info" />}
+                  title={<a>Pin Ujian</a>}
+                  description={infoUjian.pin}
+                />
+              </List.Item>
+            </List>
           </Card>
         );
       }}
