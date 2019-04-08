@@ -38,6 +38,42 @@ const Navigasi = props => {
         Pin Ujian
       </Menu.Item>
       <Menu.Item
+        key="/hadir"
+        onClick={() =>
+          props.history.push({
+            pathname: '/hadir',
+            state: { id, jwt }
+          })
+        }
+      >
+        Kehadiran Peserta
+      </Menu.Item>
+
+      <Menu.Item
+        key="/berita"
+        onClick={() =>
+          props.history.push({
+            pathname: '/berita',
+            state: { id, jwt }
+          })
+        }
+      >
+        Berita Acara Ujian
+      </Menu.Item>
+
+      <Menu.Item
+        key="/reset"
+        onClick={() =>
+          props.history.push({
+            pathname: '/reset',
+            state: { id, jwt }
+          })
+        }
+      >
+        Reset Login Peserta
+      </Menu.Item>
+
+      <Menu.Item
         key="sub-1-2"
         onClick={() =>
           props.history.push({
