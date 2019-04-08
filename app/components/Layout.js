@@ -4,6 +4,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 
 import Navigasi from './Navigasi';
 import Header from './Header';
+import InformasiMulaiUjian from './InformasiMulaiUjian';
 
 const { Content } = Layout;
 
@@ -29,12 +30,13 @@ const Page = props => {
           <Col xs={6} md={4}>
             <Navigasi id={id} jwt={jwt} pathname={pathname} />
           </Col>
-          <Col xs={18} md={20}>
+          <Col xs={13} md={15}>
             <Row type="flex" gutter={16} style={{ padding: '40px' }}>
-              <Col xs={24} md={24}>
-                {props.children}
-              </Col>
+              <Col xs={24}>{props.children}</Col>
             </Row>
+          </Col>
+          <Col xs={5} md={5} style={{ padding: '40px 40px 0 0' }}>
+            <InformasiMulaiUjian id={id} jwt={jwt} />
           </Col>
         </Row>
       </Content>

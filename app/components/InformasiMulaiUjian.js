@@ -54,28 +54,8 @@ const InformasiUjian = props => {
               <div>
                 <p>Sisa Waktu Ujian</p>
                 <Countdown
-                  onComplete={() => {
-                    props.history.push('/');
-                  }}
                   date={moment(moment.unix(durasiPengerjaan).format())}
                 />
-
-                <Button
-                  type="primary"
-                  size="large"
-                  block
-                  onClick={() => {
-                    props.history.push({
-                      pathname: '/ujian',
-                      state: {
-                        id,
-                        jwt
-                      }
-                    });
-                  }}
-                >
-                  Kerjakan
-                </Button>
               </div>
             );
           }
