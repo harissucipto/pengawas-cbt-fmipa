@@ -1,5 +1,8 @@
 {
   "HOME": "/",
   "INFO": "/info",
-  "PIN": "/pin"
+  "PIN": "/pin",
+  "HADIR": "/hadir",
+  "BERITA": "/berita",
+  "RESET": "/reset"
 }
