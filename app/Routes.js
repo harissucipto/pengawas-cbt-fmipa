@@ -11,10 +11,12 @@ import InfoPage from './containers/InfoPage';
 import PinPage from './containers/PinPage';
 import HadirPage from './containers/KehadiranPage';
 import BeritaPage from './containers/BeritaPage';
+import ResetPage from './containers/ResetPage';
 
 export default () => (
   <App>
     <Switch>
+      <Route path={routes.RESET} component={ResetPage} />
       <Route path={routes.BERITA} component={BeritaPage} />
       <Route path={routes.HADIR} component={HadirPage} />
       <Route path={routes.PIN} component={PinPage} />

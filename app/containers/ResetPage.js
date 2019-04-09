@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import Info from '../components/KehadiranPeserta';
+import Info from '../components/ResetPeserta';
 
 type Props = {};
 
