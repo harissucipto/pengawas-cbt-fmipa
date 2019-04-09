@@ -4,35 +4,12 @@ import { Table, Avatar, Checkbox, Spin, Input, List } from 'antd';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 import { id } from 'postcss-selector-parser';
+import { INFO_UJIAN_QUERY } from './PesertaReset';
 
-const MUTASI_BERITA_ACARA = gql`
-  mutation MUTASI_BERITA_ACARA(
-    $idUjian: ID!
-    $idMahasiswa: ID!
-    $kasus: String!
-  ) {
-    updateBeritaAcara(
-      idUjian: $idUjian
-      idMahasiswa: $idMahasiswa
-      kasus: $kasus
-    ) {
+const MUTASI_RESET_LOGIN = gql`
+  mutation MUTASI_RESET_LOGIN($id: ID!, $status: String!) {
+    updateSoalMahasiswa(where: { id: $id }, data: { status: $status }) {
       id
-    }
-  }
-`;
-
-const QUERY_BERITA_ACARA = gql`
-  query QUERY_BERITA_ACARA($idUjian: ID!) {
-    beritaAcaraUjians(where: { ujian: { id: $idUjian } }) {
-      id
-      mahasiswa {
-        id
-      }
-      teralambat
-      wajah
-      sakit
-      menyontek
-      alatDilarang
     }
   }
 `;
@@ -48,25 +25,19 @@ class ListPeserta extends Component {
     if (!keyword) return mahasiswas;
 
     return mahasiswas.filter(
-      mahasiswa =>
-        mahasiswa.nim.includes(keyword) || mahasiswa.nama.includes(keyword)
+      item =>
+        item.mahasiswa.nim.includes(keyword) ||
+        item.mahasiswa.nama.includes(keyword)
     );
   };
 
-  check = (beritaAcara, idMahasiswa) => kasus => {
-    if (!beritaAcara.length) return false;
-    const mahasiswa = beritaAcara.find(
-      item => item.mahasiswa.id === idMahasiswa
-    );
-
-    return mahasiswa ? mahasiswa[kasus] : false;
-  };
+  checkSudahLogin = status => status !== 'belum';
 
   updateDB = (event, idUjian, idMahasiswa) => kasus => () => {
     event({ variables: { idUjian, idMahasiswa, kasus } });
   };
 
-  columns = beritaAcaras => [
+  columns = () => [
     {
       title: 'Nomor',
       key: 'nomor',
@@ -78,88 +49,48 @@ class ListPeserta extends Component {
       key: 'image',
       width: 110,
       render: (text, record, i) => (
-        <Avatar shape="square" size={100} src={record.image} />
+        <Avatar shape="square" size={100} src={record.mahasiswa.image} />
       )
     },
     {
       title: 'Nama',
-      dataIndex: 'nama',
+      dataIndex: 'mahasiswa.nama',
       key: 'nama'
     },
     {
       title: 'NIM',
-      dataIndex: 'nim',
+      dataIndex: 'mahasiswa.nim',
       key: 'dosen'
     },
     {
-      title: 'Kasus',
+      title: 'Login',
       key: 'kasus',
       render: (text, record) => (
         <Mutation
-          mutation={MUTASI_BERITA_ACARA}
+          mutation={MUTASI_RESET_LOGIN}
           refetchQueries={[
             {
-              query: QUERY_BERITA_ACARA,
-              variables: { idUjian: this.props.idUjian }
+              query: INFO_UJIAN_QUERY,
+              variables: { id: this.props.idUjian, jwt: this.props.jwt }
             }
           ]}
+          variables={{
+            id: record.id,
+            status: this.checkSudahLogin(record.status) ? 'belum' : 'sedang'
+          }}
         >
-          {(updateBeritaAcara, { loading, error, data }) => {
+          {(resetLogin, { loading, error, data }) => {
             if (loading) return <Spin />;
 
             if (error) console.log(error);
 
-            // return fn
-            const checkKasus = this.check(beritaAcaras, record.id);
-            const updateKasus = this.updateDB(
-              updateBeritaAcara,
-              this.props.idUjian,
-              record.id
-            );
-
             return (
-              <List>
-                <List.Item>
-                  <Checkbox
-                    onClick={updateKasus('teralambat')}
-                    checked={checkKasus('teralambat')}
-                  >
-                    Terlambat
-                  </Checkbox>
-                </List.Item>
-                <List.Item>
-                  <Checkbox
-                    onClick={updateKasus('wajah')}
-                    checked={checkKasus('wajah')}
-                  >
-                    Wajah Tidak Sesuai
-                  </Checkbox>
-                </List.Item>
-                <List.Item>
-                  <Checkbox
-                    onClick={updateKasus('sakit')}
-                    checked={checkKasus('sakit')}
-                  >
-                    Sakit
-                  </Checkbox>
-                </List.Item>
-                <List.Item>
-                  <Checkbox
-                    onClick={updateKasus('alatDilarang')}
-                    checked={checkKasus('alatDilarang')}
-                  >
-                    Menggunakan Alat Dilarang
-                  </Checkbox>
-                </List.Item>
-                <List.Item>
-                  <Checkbox
-                    onClick={updateKasus('menyontek')}
-                    checked={checkKasus('menyontek')}
-                  >
-                    Menyontek
-                  </Checkbox>
-                </List.Item>
-              </List>
+              <Checkbox
+                onClick={resetLogin}
+                checked={this.checkSudahLogin(record.status)}
+              >
+                {this.checkSudahLogin(record.status) ? 'sudah' : 'belum'}
+              </Checkbox>
             );
           }}
         </Mutation>
@@ -168,7 +99,7 @@ class ListPeserta extends Component {
   ];
 
   render() {
-    const { idUjian } = this.props;
+    const { idUjian, jwt } = this.props;
     return (
       <>
         <div
@@ -185,36 +116,16 @@ class ListPeserta extends Component {
             onSearch={value => this.setState({ keyword: value })}
           />
         </div>
-
-        <Query
-          query={QUERY_BERITA_ACARA}
-          variables={{ idUjian }}
-          fetchPolicy="network-only"
-        >
-          {({ error, loading, data }) => {
-            if (loading) return <p>loading...</p>;
-            const { beritaAcaraUjians } = data;
-
-            console.log(beritaAcaraUjians);
-            {
-              /* return <p>hhhh</p>; */
-            }
-
-            return (
-              <Table
-                bordered
-                columns={this.columns(beritaAcaraUjians)}
-                pagination={false}
-                dataSource={this.filterMahasiswa(
-                  this.props.mahasiswas,
-                  this.state.keyword
-                )}
-                rowKey={record => record.nim}
-                loading={loading}
-              />
-            );
-          }}
-        </Query>
+        <Table
+          bordered
+          columns={this.columns()}
+          pagination={false}
+          dataSource={this.filterMahasiswa(
+            this.props.mahasiswas,
+            this.state.keyword
+          )}
+          rowKey={record => record.id}
+        />
       </>
     );
   }

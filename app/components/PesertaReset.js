@@ -1,17 +1,18 @@
 import React from 'react';
-import { Card, List, Avatar } from 'antd';
-import { Query } from 'react-apollo';
+import { Card, List, Avatar, Button } from 'antd';
+import { Query, RefetchQueriesProviderFn, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import ProfilUjian from './ProfilUjian';
-import ListPeserta from './ListPesertaTidakHadir';
+import ListPeserta from './ListResetLogin';
 
 const INFO_UJIAN_QUERY = gql`
   query INFO_UJIAN_QUERY($id: String!, $jwt: String!) {
     infoUjian(id: $id, jwt: $jwt) {
       id
-      kelas {
+      soalMahasiswas {
         id
-        mahasiswas {
+        status
+        mahasiswa {
           id
           nama
           image
@@ -25,6 +26,7 @@ const INFO_UJIAN_QUERY = gql`
 const QueryInfoUjian = props => (
   <Query
     {...props}
+    fetchPolicy="network-only"
     query={INFO_UJIAN_QUERY}
     variables={{ id: props.id, jwt: props.jwt }}
   >
@@ -39,7 +41,7 @@ const InformasiUjian = props => {
   return (
     <QueryInfoUjian id={id} jwt={jwt}>
       {({ data, loading, error }) => {
-        if (error) console.log(error);
+        if (error) console.log(error, 'ini error');
         if (error) return <p>Error</p>;
         if (loading) return <p>loading...</p>;
 
@@ -48,9 +50,10 @@ const InformasiUjian = props => {
         return (
           <Card loading={loading} title="Reset Login Peserta Ujian">
             <ListPeserta
-              mahasiswas={infoUjian.kelas.mahasiswas}
+              mahasiswas={infoUjian.soalMahasiswas}
               idUjian={infoUjian.id}
               loading={loading}
+              jwt={jwt}
             />
           </Card>
         );
@@ -60,3 +63,4 @@ const InformasiUjian = props => {
 };
 
 export default InformasiUjian;
+export { INFO_UJIAN_QUERY };
