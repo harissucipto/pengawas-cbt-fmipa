@@ -10,10 +10,12 @@ import HomePage from './containers/HomePage';
 import InfoPage from './containers/InfoPage';
 import PinPage from './containers/PinPage';
 import HadirPage from './containers/KehadiranPage';
+import BeritaPage from './containers/BeritaPage';
 
 export default () => (
   <App>
     <Switch>
+      <Route path={routes.BERITA} component={BeritaPage} />
       <Route path={routes.HADIR} component={HadirPage} />
       <Route path={routes.PIN} component={PinPage} />
       <Route path={routes.INFO} component={InfoPage} />

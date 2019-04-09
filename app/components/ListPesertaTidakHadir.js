@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
-import { Table, Avatar, Checkbox } from 'antd';
+import { Table, Avatar, Checkbox, Spin } from 'antd';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 import { id } from 'postcss-selector-parser';
@@ -79,13 +79,20 @@ class ListPeserta extends Component {
           ]}
         >
           {(absen, { loading, error, data }) => {
-            if (loading) return <p>loading</p>;
+            if (loading) return <Spin />;
 
             if (error) console.log(error);
 
             return (
-              <Checkbox onClick={absen} checked={this.checkHadir(tidakHadirs, record.id)}>
-                {this.checkHadir(tidakHadirs, record.id) ? 'hadir' : 'tidak'}
+              <Checkbox
+                onClick={absen}
+                checked={!this.checkHadir(tidakHadirs, record.id)}
+              >
+                {!this.checkHadir(tidakHadirs, record.id) ? (
+                  <p style={{ color: 'green' }}>hadir</p>
+                ) : (
+                  <p style={{ color: 'red' }}>tidak</p>
+                )}
               </Checkbox>
             );
           }}
