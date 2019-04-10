@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
-import { Table, Avatar, Checkbox, Spin } from 'antd';
+import { Table, Avatar, Checkbox, Spin, Input } from 'antd';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 import { id } from 'postcss-selector-parser';
@@ -19,6 +19,7 @@ const QUERY_TIDAK_HADIR = gql`
       id
       mahasiswa {
         id
+        nim
       }
     }
   }
@@ -36,6 +37,15 @@ class ListPeserta extends Component {
       tidakHadirs.findIndex(
         tidakHadir => tidakHadir.mahasiswa.id === idMahasiswa
       ) >= 0
+    );
+  };
+
+  filterMahasiswa = (mahasiswas, keyword) => {
+    if (!mahasiswas.length) return [];
+    if (!keyword) return mahasiswas;
+
+    return mahasiswas.filter(
+      item => item.nim.includes(keyword) || item.nama.includes(keyword)
     );
   };
 
@@ -104,28 +114,47 @@ class ListPeserta extends Component {
   render() {
     const { idUjian } = this.props;
     return (
-      <Query
-        query={QUERY_TIDAK_HADIR}
-        variables={{ idUjian }}
-        fetchPolicy="network-only"
-      >
-        {({ error, loading, data }) => {
-          if (loading) return <p>loading...</p>;
-          const { tidakHadirs } = data;
+      <>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            marginBottom: '20px'
+          }}
+        >
+          <Input.Search
+            style={{ maxWidth: '480px' }}
+            placeholder="Masukan Nama / Nim Mahasiswa"
+            enterButton="Cari"
+            onSearch={value => this.setState({ keyword: value })}
+          />
+        </div>
+        <Query
+          query={QUERY_TIDAK_HADIR}
+          variables={{ idUjian }}
+          fetchPolicy="network-only"
+        >
+          {({ error, loading, data }) => {
+            if (loading) return <p>loading...</p>;
+            const { tidakHadirs } = data;
 
-          return (
-            <Table
-              bordered
-              columns={this.columns(tidakHadirs)}
-              pagination={false}
-              dataSource={this.props.mahasiswas}
-              rowKey={record => record.nim}
-              loading={loading}
-              tidakHadirs={tidakHadirs}
-            />
-          );
-        }}
-      </Query>
+            return (
+              <Table
+                bordered
+                columns={this.columns(tidakHadirs)}
+                pagination={false}
+                dataSource={this.filterMahasiswa(
+                  this.props.mahasiswas,
+                  this.state.keyword
+                )}
+                rowKey={record => record.nim}
+                loading={loading}
+                tidakHadirs={tidakHadirs}
+              />
+            );
+          }}
+        </Query>
+      </>
     );
   }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, List, Avatar, Button } from 'antd';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Link } from 'react-router-dom';
 
 import ListPeserta from './ListResetLogin';
 

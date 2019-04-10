@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, List, Avatar } from 'antd';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import ProfilUjian from './ProfilUjian';
 import ListPeserta from './ListPesertaTidakHadir';
 
 const INFO_UJIAN_QUERY = gql`
@@ -14,6 +13,7 @@ const INFO_UJIAN_QUERY = gql`
         mahasiswas {
           id
           nama
+
           image
           nim
         }

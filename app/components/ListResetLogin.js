@@ -64,37 +64,41 @@ class ListPeserta extends Component {
     },
     {
       title: 'Login',
-      key: 'kasus',
-      render: (text, record) => (
-        <Mutation
-          mutation={MUTASI_RESET_LOGIN}
-          refetchQueries={[
-            {
-              query: INFO_UJIAN_QUERY,
-              variables: { id: this.props.idUjian, jwt: this.props.jwt }
-            }
-          ]}
-          variables={{
-            id: record.id,
-            status: this.checkSudahLogin(record.status) ? 'belum' : 'sedang'
-          }}
-        >
-          {(resetLogin, { loading, error, data }) => {
-            if (loading) return <Spin />;
+      key: 'status',
+      dataIndex: 'mahasiswa.status',
+      render: (text, record) =>
+        record.status !== 'sudah' ? (
+          <Mutation
+            mutation={MUTASI_RESET_LOGIN}
+            refetchQueries={[
+              {
+                query: INFO_UJIAN_QUERY,
+                variables: { id: this.props.idUjian, jwt: this.props.jwt }
+              }
+            ]}
+            variables={{
+              id: record.id,
+              status: this.checkSudahLogin(record.status) ? 'belum' : 'sedang'
+            }}
+          >
+            {(resetLogin, { loading, error, data }) => {
+              if (loading) return <Spin />;
 
-            if (error) console.log(error);
+              if (error) console.log(error);
 
-            return (
-              <Checkbox
-                onClick={resetLogin}
-                checked={this.checkSudahLogin(record.status)}
-              >
-                {this.checkSudahLogin(record.status) ? 'sudah' : 'belum'}
-              </Checkbox>
-            );
-          }}
-        </Mutation>
-      )
+              return (
+                <Checkbox
+                  onClick={resetLogin}
+                  checked={this.checkSudahLogin(record.status)}
+                >
+                  {this.checkSudahLogin(record.status) ? 'sudah' : 'belum'}
+                </Checkbox>
+              );
+            }}
+          </Mutation>
+        ) : (
+          'ujian telah dilaksanakan'
+        )
     }
   ];
 

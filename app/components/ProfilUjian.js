@@ -12,21 +12,25 @@ export default class ProfilUjian extends Component {
       <List grid={grid}>
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="info" />}
+            avatar={
+              <Avatar style={{ backgroundColor: 'maroon' }} icon="info" />
+            }
             title={<a>Nama Ujian</a>}
             description={ujian.nama}
           />
         </List.Item>
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="info" />}
+            avatar={<Avatar style={{ backgroundColor: 'brown' }} icon="info" />}
             title={<a>Pin Ujian</a>}
             description={ujian.pin}
           />
         </List.Item>
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="schedule" />}
+            avatar={
+              <Avatar icon="schedule" style={{ backgroundColor: 'olive' }} />
+            }
             title={<a>Tanggal Pelaksanaan</a>}
             description={moment(ujian.tanggalPelaksanaan).format(
               'dddd, Do MMMM  YYYY'
@@ -36,7 +40,9 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="schedule" />}
+            avatar={
+              <Avatar icon="schedule" style={{ backgroundColor: 'teal' }} />
+            }
             title={<a>Waktu Pelaksanaan</a>}
             description={moment(ujian.tanggalPelaksanaan).format('hh:mm a')}
           />
@@ -44,7 +50,9 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="schedule" />}
+            avatar={
+              <Avatar style={{ backgroundColor: 'navy' }} icon="schedule" />
+            }
             title={<a>Durasi Ujian</a>}
             description={`${ujian.durasiPengerjaan} menit`}
           />
@@ -59,14 +67,21 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="deployment-unit" />}
+            avatar={
+              <Avatar
+                icon="deployment-unit"
+                style={{ backgroundColor: 'black' }}
+              />
+            }
             title={<a>Jurusan</a>}
             description={ujian.prodi.jurusan.nama}
           />
         </List.Item>
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="cluster" />}
+            avatar={
+              <Avatar icon="cluster" style={{ backgroundColor: 'lime' }} />
+            }
             title={<a>Program Studi</a>}
             description={ujian.prodi.nama}
           />
@@ -74,7 +89,7 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="user" />}
+            avatar={<Avatar icon="user" style={{ backgroundColor: 'green' }} />}
             title={<a>Dosen</a>}
             description={ujian.dosen ? ujian.dosen.nama : '-'}
           />
@@ -82,7 +97,7 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="bank" />}
+            avatar={<Avatar icon="bank" style={{ backgroundColor: 'cyan' }} />}
             title={<a>Kelas - Mata Kuliah</a>}
             description={`${ujian.kelas.nama} - ${ujian.kelas.mataKuliah.nama}`}
           />
@@ -90,7 +105,9 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="file" />}
+            avatar={
+              <Avatar icon="file" style={{ backgroundColor: 'purple' }} />
+            }
             title={<a>Bank Soal</a>}
             description={ujian.bankSoal.nama}
           />
@@ -98,7 +115,9 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="info" />}
+            avatar={
+              <Avatar icon="info" style={{ backgroundColor: 'magenta' }} />
+            }
             title={<a>Jumlah Soal</a>}
             description={ujian.JumlahSoal}
           />
@@ -106,7 +125,9 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="setting" />}
+            avatar={
+              <Avatar icon="setting" style={{ backgroundColor: 'red' }} />
+            }
             title={<a>Tingkat Kesulitan Soal Susah</a>}
             description={`${ujian.presentasiSusah}% (${Math.round(
               ujian.presentasiSusah * ujian.JumlahSoal
@@ -116,7 +137,9 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="setting" />}
+            avatar={
+              <Avatar icon="setting" style={{ backgroundColor: 'orange' }} />
+            }
             title={<a>Tingkat Kesulitan Soal Sedang</a>}
             description={`${ujian.presentasiSedang}% (${Math.round(
               ujian.presentasiSedang * ujian.JumlahSoal
@@ -126,7 +149,9 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="setting" />}
+            avatar={
+              <Avatar icon="setting" style={{ backgroundColor: 'blue' }} />
+            }
             title={<a>Tingkat Kesulitan Soal Mudah</a>}
             description={`${ujian.presentasiMudah}% (${Math.round(
               ujian.presentasiMudah * ujian.JumlahSoal
@@ -136,7 +161,9 @@ export default class ProfilUjian extends Component {
 
         <List.Item>
           <List.Item.Meta
-            avatar={<Avatar icon="setting" />}
+            avatar={
+              <Avatar icon="setting" style={{ backgroundColor: 'pink' }} />
+            }
             title={<a>Tingkat Kesulitan Soal Acak</a>}
             description={`${100 -
               ujian.presentasiMudah -

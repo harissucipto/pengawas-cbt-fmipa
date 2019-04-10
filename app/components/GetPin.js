@@ -47,7 +47,9 @@ const InformasiUjian = props => {
             <List grid={grid}>
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar icon="info" />}
+                  avatar={
+                    <Avatar icon="info" style={{ backgroundColor: 'brown' }} />
+                  }
                   title={<a>Pin Ujian</a>}
                   description={infoUjian.pin}
                 />
