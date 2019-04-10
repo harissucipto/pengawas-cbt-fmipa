@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, List, Avatar, Button } from 'antd';
-import { Query, RefetchQueriesProviderFn, ApolloConsumer } from 'react-apollo';
+import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import ProfilUjian from './ProfilUjian';
+
 import ListPeserta from './ListResetLogin';
 
 const INFO_UJIAN_QUERY = gql`

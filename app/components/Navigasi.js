@@ -81,7 +81,7 @@ const Navigasi = props => {
           })
         }
       >
-        Setting Profil
+        logout
       </Menu.Item>
     </Menu>
   );

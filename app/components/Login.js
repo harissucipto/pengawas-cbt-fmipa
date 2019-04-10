@@ -51,8 +51,8 @@ const SubLogo = styled.div`
 
 class Login extends Component {
   state = {
-    pinPengawas: '318zJbybeG',
-    pinUjian: '-eQbQ663g'
+    pinPengawas: 'muX41hM0VD',
+    pinUjian: 'tRGFqEKK9'
   };
 
   saveToState = e => {

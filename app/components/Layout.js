@@ -5,6 +5,7 @@ import { withRouter, Redirect } from 'react-router-dom';
 import Navigasi from './Navigasi';
 import Header from './Header';
 import InformasiMulaiUjian from './InformasiMulaiUjian';
+import AkhiriUjian from './AkhiriUjian';
 
 const { Content } = Layout;
 

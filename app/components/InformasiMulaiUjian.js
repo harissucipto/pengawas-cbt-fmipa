@@ -1,10 +1,11 @@
 import React from 'react';
 import { Card, List, Avatar, Button } from 'antd';
-import { Query } from 'react-apollo';
+import { Query, ApolloConsumer, Subscription } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withRouter, Redirect } from 'react-router-dom';
 import Countdown from 'react-countdown-now';
 import moment from 'moment-timezone';
+import AkhiriUjian, { CREATE_SKOR } from './AkhiriUjian';
 
 require('moment/locale/id');
 
@@ -52,17 +53,53 @@ const InformasiUjian = props => {
             // Render a completed state
             return (
               <div>
-                <p>Sisa Waktu Ujian</p>
-                <Countdown
-                  date={moment(moment.unix(durasiPengerjaan).format())}
-                />
+                <div
+                  style={{
+                    fontSize: '25px',
+                    padding: '10px',
+                    fontWeight: 700,
+                    color: 'blue'
+                  }}
+                >
+                  <p style={{ fontSize: '20px', color: 'goldenrod' }}>
+                    Sisa Waktu Ujian
+                  </p>
+                  <ApolloConsumer>
+                    {client => (
+                      <Countdown
+                        date={moment(moment.unix(durasiPengerjaan).format())}
+                        onComplete={async () => {
+                          const dariCountDown = await client.mutate({
+                            mutation: CREATE_SKOR,
+                            variables: {
+                              idUjian: infoUjian.id,
+                              jwt
+                            }
+                          });
+                          console.log(dariCountDown, 'daricount down');
+                        }}
+                      />
+                    )}
+                  </ApolloConsumer>
+                </div>
+
+                <AkhiriUjian idUjian={infoUjian.id} jwt={jwt} />
               </div>
             );
           }
           // Render a countdown
           return (
-            <span>
-              <p>Hitung mundur waktu pelaksanaan</p>
+            <span
+              style={{
+                fontSize: '25px',
+                padding: '10px',
+                fontWeight: 700,
+                color: 'blue'
+              }}
+            >
+              <p style={{ fontSize: '20px', color: 'goldenrod' }}>
+                Hitung mundur waktu pelaksanaan
+              </p>
               {hours}:{minutes}:{seconds}
             </span>
           );
@@ -73,7 +110,7 @@ const InformasiUjian = props => {
             <div
               style={{
                 textAlign: 'center',
-                border: '2px solid black',
+
                 paddingTop: '1rem',
                 marginBottom: '1rem'
               }}
