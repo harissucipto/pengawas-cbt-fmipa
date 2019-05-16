@@ -11,15 +11,7 @@ const INFO_UJIAN_QUERY = gql`
       ujian {
         id
       }
-      soals {
-        id
-        pertanyaan
-        jawaban {
-          id
-          content
-          title
-        }
-      }
+      urutan
       jawaban {
         id
         pegangan

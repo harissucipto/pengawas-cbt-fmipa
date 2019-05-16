@@ -36,12 +36,10 @@ const INFO_UJIAN_QUERY = gql`
       pin
       tanggalPelaksanaan
       lokasi
-      JumlahSoal
       durasiPengerjaan
-      presentasiSusah
-      presentasiSedang
-      presentasiMudah
-      durasiPengerjaan
+      soals {
+        id
+      }
     }
   }
 `;

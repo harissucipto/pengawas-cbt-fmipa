@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, List, Avatar, Button, Input, Popconfirm, Icon } from 'antd';
+import { Card, List, Avatar, Button, Input, Popconfirm, Icon, message } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
@@ -30,7 +30,7 @@ const TampilkanSoal = props => (
           title="Anda ingin mengakhiri ujian？"
           icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
           onConfirm={async () => {
-            const res = await akhiri();
+            const res = await akhiri().catch(() => message.error('Koneksi gangguan, Coba Lagi!'));
             props.history.push('/');
           }}
         >

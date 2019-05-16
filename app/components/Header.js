@@ -38,7 +38,7 @@ export default class Header extends Component {
         style={{ height: '10rem', color: 'white', paddingTop: '10px' }}
       >
         <Logo>
-          <img src="./logo.svg" alt="logo" />
+          <img src="logo-ur.png" alt="logo" />
           <h1 style={{ color: 'white' }}>CBT FMIPA UR</h1>
         </Logo>
         <SubLogo>
